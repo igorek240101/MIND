@@ -1,0 +1,9 @@
+C:\Users\Игорь\GitHub\MVS\MIND\MIND\MIND\bin\Debug\MIND.exe.config
+C:\Users\Игорь\GitHub\MVS\MIND\MIND\MIND\bin\Debug\MIND.exe
+C:\Users\Игорь\GitHub\MVS\MIND\MIND\MIND\bin\Debug\MIND.pdb
+C:\Users\Игорь\GitHub\MVS\MIND\MIND\MIND\obj\Debug\MIND.csprojAssemblyReference.cache
+C:\Users\Игорь\GitHub\MVS\MIND\MIND\MIND\obj\Debug\MIND.csproj.GenerateResource.cache
+C:\Users\Игорь\GitHub\MVS\MIND\MIND\MIND\obj\Debug\MIND.csproj.CoreCompileInputs.cache
+C:\Users\Игорь\GitHub\MVS\MIND\MIND\MIND\obj\Debug\MIND.exe
+C:\Users\Игорь\GitHub\MVS\MIND\MIND\MIND\obj\Debug\MIND.pdb
+C:\Users\Игорь\GitHub\MVS\MIND\MIND\MIND\obj\Debug\MIND.Form1.resources
