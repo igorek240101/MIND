@@ -8,15 +8,25 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
 
 namespace MIND
 {
     public partial class Form1 : Form
     {
+
+
+        public static Form1 main;
+
+        public static string baseFamilyName = "Times New Roman";
+        public static float emSize = 14.25F;
+
+
+        string file = null;
         bool isRedactor = true;
         bool isPrev = true;
         Image mark = Image.FromFile(Application.StartupPath + "\\Resourse\\mark.jpg");
-        List<SimpleInLineText> lines = new List<SimpleInLineText>();
+        SimpleLines simpleLines;
         public Form1()
         {
             InitializeComponent();
@@ -28,7 +38,8 @@ namespace MIND
             превьюToolStripMenuItem.Image = mark;
             textBox1.Location = new Point(5, 5);
             textBox1.Size = new Size(panel1.Width-25, 29);
-            lines.Add(new SimpleInLineText(textBox1.Text));
+            main = this;
+            simpleLines = new SimpleLines(textBox1.Text);
         }
 
         private void предпросмотрHtmlToolStripMenuItem_Click(object sender, EventArgs e)
@@ -102,75 +113,69 @@ namespace MIND
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
             textBox1.Size = new Size(panel1.Width - 25, (textBox1.Text.Split('\n').Length-1) * 22 + 29);
-            if(textBox1.Lines.Length > lines.Count)
+
+            simpleLines = new SimpleLines(textBox1.Text);
+
+            panel2.Controls.Clear();
+            panel2.Controls.Add(simpleLines.value);
+        }
+
+        private void новыйФайлToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (file != null || textBox1.Text != "")
+                if (MessageBox.Show("Вы уверены? Не сохраненные данные будут потеряны!", "Новый документ", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.No) return;
+            textBox1.Text = "";
+            file = null;
+        }
+
+        private void открытьToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (file != null || textBox1.Text != "")
+                if (MessageBox.Show("Вы уверены? Не сохраненные данные будут потеряны!", "Новый документ", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.No) return;
+            OpenFileDialog fileDialog = new OpenFileDialog();
+            fileDialog.InitialDirectory = Application.StartupPath;
+            fileDialog.Title = "Открыть";
+            fileDialog.CheckPathExists = true;
+            fileDialog.CheckFileExists = true;
+            fileDialog.ShowDialog();
+            try
             {
-                int y = 0;
-                int sum = 0;
-                for(int i = 0; i < textBox1.Lines.Length; i++)
-                {
-                    if(sum + textBox1.Lines[i].Length >= textBox1.SelectionStart)
-                    {
-                        break;
-                    }
-                    y++;
-                    sum += textBox1.Lines[i].Length+2;
-                }
-                lines.Insert(y, new SimpleInLineText(textBox1.Lines[y]));
+                file = fileDialog.FileName;
+                textBox1.Text = File.ReadAllText(file);
             }
-            else if (textBox1.Lines.Length < lines.Count && textBox1.Lines.Length != 0)
+            catch { file = null; }
+        }
+
+        private void сохранитьToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if(file != null)
             {
-                
-                int y = 0;
-                int sum = 0;
-                for (int i = 0; i < textBox1.Lines.Length; i++)
-                {
-                    if (sum + textBox1.Lines[i].Length >= textBox1.SelectionStart)
-                    {
-                        break;
-                    }
-                    y++;
-                    sum += textBox1.Lines[i].Length + 2;
-                }
-                lines.RemoveAt(y+1);
+                File.WriteAllText(file, textBox1.Text);
             }
             else
             {
-                if (textBox1.Lines.Length == 0) lines[0] = new SimpleInLineText("");
-                else
-                {
-                    int y = 0;
-                    int sum = 0;
-                    for (int i = 0; i < textBox1.Lines.Length; i++)
-                    {
-                        if (sum + textBox1.Lines[i].Length >= textBox1.SelectionStart)
-                        {
-                            break;
-                        }
-                        y++;
-                        sum += textBox1.Lines[i].Length + 2;
-                    }
-                    lines[y] = new SimpleInLineText(textBox1.Lines[y]);
-                }
+                сохранитьКакToolStripMenuItem_Click(sender, e);
             }
+        }
 
-            // Временный код 
+        private void сохранитьКакToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog saveFile = new SaveFileDialog();
+            saveFile.InitialDirectory = Application.StartupPath;
+            saveFile.Title = "Сохранить как";
+            saveFile.FileOk += new CancelEventHandler(SaveAs);
+            saveFile.ShowDialog();
+        }
 
-            while(panel2.Controls.Count>0)
-            {
-                panel2.Controls.RemoveAt(0);
-            }
+        private void SaveAs(object sender, CancelEventArgs e)
+        {
+            file = (sender as SaveFileDialog).FileName;
+            File.WriteAllText(file, textBox1.Text);
+        }
 
-            for(int i = 0; i < lines.Count; i++)
-            {
-                int sized = 0, loc = 0;
-                for(int j = 0; j < lines[i].value.Count; j++)
-                {
-                    panel2.Controls.Add(lines[i].value[j]);
-                    panel2.Controls[panel2.Controls.Count - 1].Location = new Point(sized+loc, i*22);
-                    loc = loc + sized;
-                    sized = panel2.Controls[panel2.Controls.Count - 1].Width;
-                }
-            }
+        private void statusStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+
         }
     }
 }
