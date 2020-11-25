@@ -77,11 +77,11 @@ namespace MIND.Library
         {
             for(int i = 0; i+2 < value.Count; i++)
             {
-                if(value[i].s == '\'' && value[i+1].s != '\'')
+                if(value[i].s == '`' && value[i+1].s != '`')
                 {
                     for(int j = i+2; j < value.Count; j++)
                     {
-                        if(value[j].s == '\'')
+                        if(value[j].s == '`')
                         {
                             startPos = i; lastPos = j;
                             return;

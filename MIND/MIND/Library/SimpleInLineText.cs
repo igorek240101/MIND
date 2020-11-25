@@ -52,11 +52,11 @@ namespace MIND.Library
                 int w = 0;
                 for (int i = 0; i < v.Count; i++)
                 {
-                    w += (int)(v[i].Text.Length*v[i].Font.Size);
+                    w += (int)(v[i].Text.Length * v[i].Font.Size);
                     Controls.Add(v[i]);
                     Controls[Controls.Count - 1].Location = new Point(sized + loc, 0);
                     loc = loc + sized;
-                    sized = Controls[Controls.Count - 1].Width;
+                    sized = Controls[Controls.Count - 1].Width - 8;
                 }
                 Size = new Size(w, 22);
             }

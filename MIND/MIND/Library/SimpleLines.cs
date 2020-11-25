@@ -12,11 +12,30 @@ namespace MIND.Library
 
         public SimpleLines(string s)
         {
-            int x = 0, y = 0, maxx = 0;
+            int x = 0 , y = 5, maxx = 0 , count_of_code = 0;
             List<InLineText> inLines = new List<InLineText>();
             s = ToFormatLine(s);
             string[] array = s.Split(new string[] { "\r\n" }, StringSplitOptions.None);
             List<Formated>[] formateds = new List<Formated>[array.Length];
+            List<List<Formated>> codes = new List<List<Formated>>();
+            for(int i = 0; i < formateds.Length; i++)
+            {
+                List<Formated> codes_formated = new List<Formated>();
+                for (int j = 0; j < array[i].Length; j++) codes_formated.Add(new Formated(array[i][j]));
+                int st = 0;
+                while (st < codes_formated.Count)
+                {
+                    int start, end;
+                    SearchCode(codes_formated.GetRange(st, codes_formated.Count - st), out start, out end);
+                    if (start == -1) break;
+                    codes.Add(new List<Formated>());
+                    for(int j = start; j <= end; j++)
+                    {
+                        codes[codes.Count - 1].Add(new Formated(codes_formated[j].s));
+                    }
+                    st = end + 1;
+                }
+            }
             for (int i = 0; i < array.Length; i++) { formateds[i] = InLineText.SearchFormat(array[i]); }
             for (int i = 0; i < array.Length; i++)
             {
@@ -82,12 +101,22 @@ namespace MIND.Library
                                 }
                             case 2:
                                 {
-
+                                    inLines.Add(new ImageText(formateds[i].GetRange(j, k - j + 1)));
+                                    y += 22; x = 0;
+                                    inLines[inLines.Count - 1].startString = y;
+                                    inLines[inLines.Count - 1].startX = x;
+                                    if (maxx < inLines[inLines.Count - 1].value.Width) maxx = inLines[inLines.Count - 1].value.Width;
+                                    y += inLines[inLines.Count - 1].value.Height;
                                     break;
                                 }
                             case 3:
                                 {
-
+                                    inLines.Add(new InLineCode(codes[count_of_code]));
+                                    count_of_code++;
+                                    inLines[inLines.Count - 1].startString = y;
+                                    inLines[inLines.Count - 1].startX = x;
+                                    x += inLines[inLines.Count - 1].value.Width;
+                                    count_of_code++;
                                     break;
                                 }
                             case 4:
@@ -126,9 +155,12 @@ namespace MIND.Library
             string[] array = s.Split(new string[] { "***" }, StringSplitOptions.None);
             for (int i = 1; i < array.Length; i += 2)
             {
-                if (i + 1 != array.Length)
+                if (i + 1 != array.Length && array[i].Length>0 && array[i] != "\r\n")
                 {
-                    array[i] = array[i].Replace(System.Environment.NewLine, "***" + System.Environment.NewLine + "***");
+                    if (array[i][0] == '\r') { array[i] = array[i].Remove(0, 2); array[i-1] = array[i-1].Insert(array[i-1].Length,"\r\n"); }
+                    if (array[i][array[i].Length-1] == '\n') {array[i] = array[i].Remove(array[i].Length-2, 2); array[i+1] = array[i+1].Insert(0, "\r\n"); }
+                    array[i] = array[i].Replace(System.Environment.NewLine, "***\r\n***");
+
                 }
             }
             s = array[0];
@@ -139,8 +171,10 @@ namespace MIND.Library
             array = s.Split(new string[] { "___" }, StringSplitOptions.None);
             for (int i = 1; i < array.Length; i += 2)
             {
-                if (i + 1 != array.Length)
+                if (i + 1 != array.Length && array[i].Length > 0 && array[i] != "\r\n")
                 {
+                    if (array[i][0] == '\r') { array[i] = array[i].Remove(0, 2); array[i - 1] = array[i - 1].Insert(array[i - 1].Length, "\r\n"); }
+                    if (array[i][array[i].Length - 1] == '\n') { array[i] = array[i].Remove(array[i].Length - 2, 2); array[i + 1] = array[i + 1].Insert(0, "\r\n"); }
                     array[i] = array[i].Replace(System.Environment.NewLine, "___\r\n___");
                 }
             }
@@ -152,8 +186,10 @@ namespace MIND.Library
             array = s.Split(new string[] { "~~~" }, StringSplitOptions.None);
             for (int i = 1; i < array.Length; i += 2)
             {
-                if (i + 1 != array.Length)
+                if (i + 1 != array.Length && array[i].Length > 0 && array[i] != "\r\n")
                 {
+                    if (array[i][0] == '\r') { array[i] = array[i].Remove(0, 2); array[i - 1] = array[i - 1].Insert(array[i - 1].Length, "\r\n"); }
+                    if (array[i][array[i].Length - 1] == '\n') { array[i] = array[i].Remove(array[i].Length - 2, 2); array[i + 1] = array[i + 1].Insert(0, "\r\n"); }
                     array[i] = array[i].Replace(System.Environment.NewLine, "~~~\r\n~~~");
                 }
             }
@@ -164,8 +200,10 @@ namespace MIND.Library
             array = s.Split(new string[] { "**" }, StringSplitOptions.None);
             for (int i = 1; i < array.Length; i += 2)
             {
-                if (i + 1 != array.Length)
+                if (i + 1 != array.Length && array[i].Length > 0 && array[i] != "\r\n")
                 {
+                    if (array[i][0] == '\r') { array[i] = array[i].Remove(0, 2); array[i - 1] = array[i - 1].Insert(array[i - 1].Length, "\r\n"); }
+                    if (array[i][array[i].Length - 1] == '\n') { array[i] = array[i].Remove(array[i].Length - 2, 2); array[i + 1] = array[i + 1].Insert(0, "\r\n"); }
                     array[i] = array[i].Replace(System.Environment.NewLine, "**\r\n**");
                 }
             }
@@ -177,8 +215,10 @@ namespace MIND.Library
             array = s.Split(new string[] { "__" }, StringSplitOptions.None);
             for (int i = 1; i < array.Length; i += 2)
             {
-                if (i + 1 != array.Length)
+                if (i + 1 != array.Length && array[i].Length > 0 && array[i] != "\r\n")
                 {
+                    if (array[i][0] == '\r') { array[i] = array[i].Remove(0, 2); array[i - 1] = array[i - 1].Insert(array[i - 1].Length, "\r\n"); }
+                    if (array[i][array[i].Length - 1] == '\n') { array[i] = array[i].Remove(array[i].Length - 2, 2); array[i + 1] = array[i + 1].Insert(0, "\r\n"); }
                     array[i] = array[i].Replace(System.Environment.NewLine, "__\r\n__");
                 }
             }
@@ -190,8 +230,10 @@ namespace MIND.Library
             array = s.Split(new string[] { "~~" }, StringSplitOptions.None);
             for (int i = 1; i < array.Length; i += 2)
             {
-                if (i + 1 != array.Length)
+                if (i + 1 != array.Length && array[i].Length > 0 && array[i] != "\r\n")
                 {
+                    if (array[i][0] == '\r') { array[i] = array[i].Remove(0, 2); array[i - 1] = array[i - 1].Insert(array[i - 1].Length, "\r\n"); }
+                    if (array[i][array[i].Length - 1] == '\n') { array[i] = array[i].Remove(array[i].Length - 2, 2); array[i + 1] = array[i + 1].Insert(0, "\r\n"); }
                     array[i] = array[i].Replace(System.Environment.NewLine, "~~\r\n~~");
                 }
             }
@@ -204,8 +246,10 @@ namespace MIND.Library
             array = s.Split(new string[] { "*" }, StringSplitOptions.None);
             for (int i = 1; i < array.Length; i += 2)
             {
-                if (i + 1 != array.Length)
+                if (i + 1 != array.Length && array[i].Length > 0 && array[i] != "\r\n")
                 {
+                    if (array[i][0] == '\r') { array[i] = array[i].Remove(0, 2); array[i - 1] = array[i - 1].Insert(array[i - 1].Length, "\r\n"); }
+                    if (array[i][array[i].Length - 1] == '\n') { array[i] = array[i].Remove(array[i].Length - 2, 2); array[i + 1] = array[i + 1].Insert(0, "\r\n"); }
                     array[i] = array[i].Replace(System.Environment.NewLine, "*\r\n*");
                 }
             }
@@ -216,8 +260,10 @@ namespace MIND.Library
             array = s.Split(new string[] { "_" }, StringSplitOptions.None);
             for (int i = 1; i < array.Length; i += 2)
             {
-                if (i + 1 != array.Length)
+                if (i + 1 != array.Length && array[i].Length > 0 && array[i] != "\r\n")
                 {
+                    if (array[i][0] == '\r') { array[i] = array[i].Remove(0, 2); array[i - 1] = array[i - 1].Insert(array[i - 1].Length, "\r\n"); }
+                    if (array[i][array[i].Length - 1] == '\n') { array[i] = array[i].Remove(array[i].Length - 2, 2); array[i + 1] = array[i + 1].Insert(0, "\r\n"); }
                     array[i] = array[i].Replace(System.Environment.NewLine, "_\r\n_");
                 }
             }
@@ -228,8 +274,10 @@ namespace MIND.Library
             array = s.Split(new string[] { "~" }, StringSplitOptions.None);
             for (int i = 1; i < array.Length; i += 2)
             {
-                if (i + 1 != array.Length)
+                if (i + 1 != array.Length && array[i].Length > 0 && array[i] != "\r\n")
                 {
+                    if (array[i][0] == '\r') { array[i] = array[i].Remove(0, 2); array[i - 1] = array[i - 1].Insert(array[i - 1].Length, "\r\n"); }
+                    if (array[i][array[i].Length - 1] == '\n') { array[i] = array[i].Remove(array[i].Length - 2, 2); array[i + 1] = array[i + 1].Insert(0, "\r\n"); }
                     array[i] = array[i].Replace(System.Environment.NewLine, "~\r\n~");
                 }
             }

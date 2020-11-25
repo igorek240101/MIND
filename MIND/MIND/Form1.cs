@@ -177,5 +177,12 @@ namespace MIND
         {
 
         }
+
+        private void ссылкуToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Enabled = false;
+            LinkInsert linkInsert = new LinkInsert(this);
+            linkInsert.Show();
+        }
     }
 }

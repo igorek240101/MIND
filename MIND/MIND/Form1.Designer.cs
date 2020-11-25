@@ -191,7 +191,7 @@ namespace MIND
             this.изменитьToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
-            this.contextMenuStrip1.Size = new System.Drawing.Size(129, 48);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(181, 70);
             // 
             // вставитьToolStripMenuItem
             // 
@@ -199,19 +199,20 @@ namespace MIND
             this.ссылкуToolStripMenuItem,
             this.изображениеToolStripMenuItem});
             this.вставитьToolStripMenuItem.Name = "вставитьToolStripMenuItem";
-            this.вставитьToolStripMenuItem.Size = new System.Drawing.Size(128, 22);
+            this.вставитьToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.вставитьToolStripMenuItem.Text = "Вставить";
             // 
             // ссылкуToolStripMenuItem
             // 
             this.ссылкуToolStripMenuItem.Name = "ссылкуToolStripMenuItem";
-            this.ссылкуToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
+            this.ссылкуToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.ссылкуToolStripMenuItem.Text = "Ссылку";
+            this.ссылкуToolStripMenuItem.Click += new System.EventHandler(this.ссылкуToolStripMenuItem_Click);
             // 
             // изображениеToolStripMenuItem
             // 
             this.изображениеToolStripMenuItem.Name = "изображениеToolStripMenuItem";
-            this.изображениеToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
+            this.изображениеToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.изображениеToolStripMenuItem.Text = "Изображение";
             // 
             // изменитьToolStripMenuItem
@@ -224,7 +225,7 @@ namespace MIND
             this.подчерукнутоToolStripMenuItem,
             this.зачеркнутоПодчеркнутоToolStripMenuItem});
             this.изменитьToolStripMenuItem.Name = "изменитьToolStripMenuItem";
-            this.изменитьToolStripMenuItem.Size = new System.Drawing.Size(128, 22);
+            this.изменитьToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.изменитьToolStripMenuItem.Text = "Изменить";
             // 
             // жирныйToolStripMenuItem
@@ -331,7 +332,7 @@ namespace MIND
         private System.Windows.Forms.ToolStripMenuItem предпросмотрHtmlToolStripMenuItem;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel panel2;
-        private TextBox textBox1;
+        public TextBox textBox1;
         private ContextMenuStrip contextMenuStrip1;
         private ToolStripMenuItem вставитьToolStripMenuItem;
         private ToolStripMenuItem ссылкуToolStripMenuItem;

@@ -16,6 +16,14 @@ namespace MIND.Library
             int count = 1;
             for (int i = 1; i < s.Count; i++) if (s[i].s == ']') { count = i; break; };
             List<LinkLabel> v = new List<LinkLabel>();
+            bool isLink = true;
+            string link = "", context = "";
+            for (int k = count + 2; k + 1 < s.Count; k++)
+            {
+                if (s[k].s == ' ' && s[k + 1].s == '\"') { isLink = false; k += 3; }
+                if (isLink) link += s[k].s;
+                else context += s[k - 1].s;
+            }
             for (int i = 1; i < count; i++)
             {
                 string current = "";
@@ -29,14 +37,6 @@ namespace MIND.Library
                     {
                         v.Add(new LinkLabel());
                         v[v.Count - 1].AutoSize = true;
-                        bool isLink = true;
-                        string link = "", context = "";
-                        for (int k = count; k < s.Count; k++)
-                        {
-                            if (s[k].s == ' ' && s[k + 1].s == '\"') { isLink = false; k += 2; }
-                            if (isLink) link += s[k];
-                            else context += s[k];
-                        }
                         try { v[v.Count - 1].Links.Add(0, v[v.Count - 1].Text.Length, link); } catch { }
                         v[v.Count - 1].ContextMenuStrip = new ContextMenuStrip();
                         try { v[v.Count - 1].ContextMenuStrip.Text = context; } catch { v[v.Count - 1].ContextMenuStrip.Text = ""; }
@@ -69,8 +69,7 @@ namespace MIND.Library
 
         private void LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Console.WriteLine((sender as LinkLabel).Links[0].LinkData.ToString());
-            System.Diagnostics.Process.Start((sender as LinkLabel).Links[0].LinkData.ToString());
+           System.Diagnostics.Process.Start((sender as LinkLabel).Links[0].LinkData.ToString());
         }
 
 

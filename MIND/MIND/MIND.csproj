@@ -53,15 +53,25 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="Library\ImageText.cs" />
+    <Compile Include="Library\InLineCode.cs" />
     <Compile Include="Library\InLineText.cs" />
     <Compile Include="Library\LinesText.cs" />
     <Compile Include="Library\Link.cs" />
     <Compile Include="Library\SimpleInLineText.cs" />
     <Compile Include="Library\SimpleLines.cs" />
+    <Compile Include="LinkInsert.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LinkInsert.Designer.cs">
+      <DependentUpon>LinkInsert.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LinkInsert.resx">
+      <DependentUpon>LinkInsert.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
