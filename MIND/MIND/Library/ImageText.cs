@@ -9,7 +9,7 @@ namespace MIND.Library
 {
     class ImageText : InLineText
     {
-        public ImageText(List<Formated> s)
+        public ImageText(List<Formated> s, string l)
         {
             int count = 2;
             for (int i = 2; i < s.Count; i++) if (s[i].s == ']') { count = i; break; };
@@ -66,12 +66,12 @@ namespace MIND.Library
                     context = "Извените, но я чайник, и я не могу загрузить ваше изображение";
                 }
             }
-            value = new ImageTextControl(v, image, context);
+            value = new ImageTextControl(v, image, context, l);
         }
 
         public class ImageTextControl : UserControl
         {
-            public ImageTextControl(List<Label> value, Image image, string context)
+            public ImageTextControl(List<Label> value, Image image, string context, string Link)
             {
                 PictureBox picture = new PictureBox();
                 picture.Size = new Size(image.Width, image.Height);
@@ -80,6 +80,8 @@ namespace MIND.Library
                 picture.ContextMenuStrip.Text = context;
                 picture.MouseHover += new EventHandler(ImageMouseHover);
                 picture.MouseLeave += new EventHandler(ImageMouseLeave);
+                picture.MouseClick += new MouseEventHandler(ImageClicked);
+                if (Link != null) picture.Name = Link;
                 Controls.Add(picture);
                 picture.Location = new Point(0, 0);
                 int loc = 0, sized = 0, w = 0;
@@ -103,6 +105,16 @@ namespace MIND.Library
         private static void ImageMouseLeave(object sender, EventArgs e)
         {
             Form1.main.toolStripStatusLabel1.Text = "";
+        }
+
+        private static void ImageClicked(object sender, MouseEventArgs e)
+        {
+            try
+            {
+                string s = (sender as PictureBox).Name;
+                if (s != "") System.Diagnostics.Process.Start(s);
+            }
+            catch {  }
         }
 
     }

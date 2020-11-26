@@ -184,5 +184,12 @@ namespace MIND
             LinkInsert linkInsert = new LinkInsert(this);
             linkInsert.Show();
         }
+
+        private void изображениеToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Enabled = false;
+            ImageInsert imageInsert = new ImageInsert(this);
+            imageInsert.Show();
+        }
     }
 }

@@ -23,7 +23,6 @@ namespace MIND
         {
             if (textBox1.Text != "" && textBox2.Text != "")
             {
-                parent.Enabled = true;
                 if (textBox3.Text != "") parent.textBox1.Text = parent.textBox1.Text.Insert(parent.textBox1.SelectionStart, "[" + textBox1.Text + "](" + textBox2.Text + " \"" + textBox3.Text + "\")");
                 else parent.textBox1.Text = parent.textBox1.Text.Insert(parent.textBox1.SelectionStart, "[" + textBox1.Text + "](" + textBox2.Text + ")");
                 Close();
@@ -34,6 +33,11 @@ namespace MIND
         private void button2_Click(object sender, EventArgs e)
         {
             Close();
+        }
+
+        private void LinkInsert_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            parent.Enabled = true;
         }
     }
 }

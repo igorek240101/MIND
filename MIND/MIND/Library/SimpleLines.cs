@@ -50,8 +50,8 @@ namespace MIND.Library
                         SearchLink(formateds[i].GetRange(st, formateds[i].Count - st), out start, out end);
                         if (start == -1) break;
 
-                        matrix[start+st] = 1;
-                        matrix[end+st] = -1;
+                        if (start + st == 0 || matrix[start+st-1] != 2)matrix[start+st] = 1;
+                        if (end + st + 1 == matrix.Length || matrix[end + st + 1] != -2) matrix[end+st] = -1;
                         if (start+st > 0 && matrix[start+st - 1] == 0) matrix[start+st - 1] = -4;
                         if (end+st + 1 < matrix.Length && matrix[end+st + 1] == 0) matrix[end+st + 1] = 4;
                         st += end + 1;
@@ -62,11 +62,16 @@ namespace MIND.Library
                         int start, end;
                         SearchImage(formateds[i].GetRange(st, formateds[i].Count - st), out start, out end);
                         if (start == -1) break;
-
-                        matrix[start+st] = 2;
-                        matrix[end+st] = -2;
-                        if (start+st > 0 && matrix[start+st - 1] == 0) matrix[start+st - 1] = -4;
-                        if (end+st + 1 < matrix.Length && matrix[end+st + 1] == 0) matrix[end+st + 1] = 4;
+                        for(int j = start + st; j >= 0; j--)
+                        {
+                            if (matrix[j] > 0 && start + st != 0 && (j != 0 || matrix[j] != 4)) break;
+                            if (j == 0)
+                            {
+                                matrix[start + st] = 2; matrix[end + st] = -2;
+                                if (start + st > 0 && matrix[start + st - 1] == 0) matrix[start + st - 1] = -4;
+                                if (end + st + 1 < matrix.Length && matrix[end + st + 1] == 0) matrix[end + st + 1] = 4;
+                            }
+                        }
                         st += end + 1;
                     }
                     st = 0;
@@ -102,7 +107,7 @@ namespace MIND.Library
                                 }
                             case 2:
                                 {
-                                    inLines.Add(new ImageText(formateds[i].GetRange(j, k - j + 1)));
+                                    inLines.Add(new ImageText(formateds[i].GetRange(j, k - j + 1), null));
                                     y += 11; x = 0;
                                     inLines[inLines.Count - 1].startString = y;
                                     inLines[inLines.Count - 1].startX = x;

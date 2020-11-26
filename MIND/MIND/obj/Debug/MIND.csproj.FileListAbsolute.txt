@@ -17,3 +17,4 @@ D:\GitHub\MIND\MIND\MIND\obj\Debug\MIND.csproj.CoreCompileInputs.cache
 D:\GitHub\MIND\MIND\MIND\obj\Debug\MIND.exe
 D:\GitHub\MIND\MIND\MIND\obj\Debug\MIND.pdb
 D:\GitHub\MIND\MIND\MIND\obj\Debug\MIND.LinkInsert.resources
+D:\GitHub\MIND\MIND\MIND\obj\Debug\MIND.ImageInsert.resources

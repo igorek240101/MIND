@@ -14,15 +14,24 @@ namespace MIND.Library
         public Link(List<Formated> s)
         {
             int count = 1;
-            for (int i = 1; i < s.Count; i++) if (s[i].s == ']') { count = i; break; };
+            for (int i = s.Count-1; i >= 0; i--) if (s[i].s == ']') { count = i; break;};
             List<LinkLabel> v = new List<LinkLabel>();
-            bool isLink = true;
+            bool isLink = false;
             string link = "", context = "";
-            for (int k = count + 2; k + 1 < s.Count; k++)
+            for (int k = s.Count-2; k >= count + 2; k--)
             {
-                if (s[k].s == ' ' && s[k + 1].s == '\"') { isLink = false; k += 3; }
+                if (s[k-1].s == ' ' && s[k].s == '\"') { isLink = true; k -= 3; }
                 if (isLink) link += s[k].s;
-                else context += s[k - 1].s;
+                else context += s[k].s;
+            }
+            List<ImageText> imageTexts = new List<ImageText>();
+            int st = 1;
+            while (st < s.Count)
+            {
+                int start, end;
+                LinesText.SearchImage(s.GetRange(st, count - st), out start, out end);
+                if (start == -1) break;
+                st += end + 1;
             }
             for (int i = 1; i < count; i++)
             {

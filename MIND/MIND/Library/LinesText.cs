@@ -11,7 +11,7 @@ namespace MIND.Library
         protected int startString;
 
 
-        public void SearchLink(List<Formated> value, out int startPos, out int lastpos)
+        public static void SearchLink(List<Formated> value, out int startPos, out int lastpos)
         {
             for(int i = 0; i+5 < value.Count; i++)
             {
@@ -19,6 +19,12 @@ namespace MIND.Library
                 {
                     for(int j = i+2; j+3 < value.Count; j++)
                     {
+                        if(value[j-1].s == '!' && value[j].s == '[')
+                        {
+                            int start = 0, last = 0;
+                            SearchImage(value.GetRange(j - 1, value.Count - (j - 1)), out start, out last);
+                            if (start == 0) j += last - 1;
+                        }
                         if(value[j].s == ']')
                         {
                             if(value[j+1].s != '(' || value[j+2].s == ')')
@@ -42,7 +48,7 @@ namespace MIND.Library
             startPos = -1; lastpos = -1;
         }
 
-        public void SearchImage(List<Formated> value, out int startPos, out int lastPos)
+        public static void SearchImage(List<Formated> value, out int startPos, out int lastPos)
         {
             for (int i = 0; i + 5 < value.Count; i++)
             {
@@ -50,6 +56,12 @@ namespace MIND.Library
                 {
                     for (int j = i + 2; j + 3 < value.Count; j++)
                     {
+                        if (value[j - 1].s != '!' && value[j].s == '[')
+                        {
+                            int start = 0, last = 0;
+                            SearchLink(value.GetRange(j, value.Count - j), out start, out last);
+                            if (start == 0) j = last;
+                        }
                         if (value[j].s == ']')
                         {
                             if (value[j + 1].s != '(' || value[j + 2].s == ')')
@@ -61,7 +73,7 @@ namespace MIND.Library
                             {
                                 if (value[k].s == ')')
                                 {
-                                    startPos = i; lastPos = k - i;
+                                    startPos = i; lastPos = k;
                                     return;
                                 }
                             }
@@ -73,7 +85,7 @@ namespace MIND.Library
             startPos = -1; lastPos = -1;
         }
 
-        public void SearchCode(List<Formated> value, out int startPos, out int lastPos)
+        public static void SearchCode(List<Formated> value, out int startPos, out int lastPos)
         {
             for(int i = 0; i+2 < value.Count; i++)
             {
