@@ -81,13 +81,15 @@ namespace MIND.Library
                 int w = 0;
                 for (int i = 0; i < v.Count; i++)
                 {
-                    w += (int)(v[i].Text.Length * v[i].Font.Size);
+                    Graphics g = Graphics.FromHwnd(v[i].Handle);
+                    SizeF s = g.MeasureString(v[i].Text, Font);
+                    w += v[i].Padding.Horizontal + (int)(s.Width*2);
                     Controls.Add(v[i]);
                     Controls[Controls.Count - 1].Location = new Point(sized + loc, 0);
                     loc = loc + sized;
                     sized = Controls[Controls.Count - 1].Width;
                 }
-                Size = new Size(w, 22);
+                Size = new Size((int)(w * 0.8), 22);
             }
         }
     } 

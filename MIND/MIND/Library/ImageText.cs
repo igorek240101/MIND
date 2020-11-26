@@ -79,6 +79,7 @@ namespace MIND.Library
                 picture.ContextMenuStrip = new ContextMenuStrip();
                 picture.ContextMenuStrip.Text = context;
                 picture.MouseHover += new EventHandler(ImageMouseHover);
+                picture.MouseLeave += new EventHandler(ImageMouseLeave);
                 Controls.Add(picture);
                 picture.Location = new Point(0, 0);
                 int loc = 0, sized = 0, w = 0;
@@ -97,6 +98,11 @@ namespace MIND.Library
         private static void ImageMouseHover(object sender, EventArgs e)
         {
             try { Form1.main.toolStripStatusLabel1.Text = (sender as PictureBox).ContextMenuStrip.Text; } catch { }
+        }
+
+        private static void ImageMouseLeave(object sender, EventArgs e)
+        {
+            Form1.main.toolStripStatusLabel1.Text = "";
         }
 
     }
