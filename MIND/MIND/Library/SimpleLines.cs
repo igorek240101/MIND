@@ -103,6 +103,7 @@ namespace MIND.Library
                                     inLines[inLines.Count - 1].startString = y;
                                     inLines[inLines.Count - 1].startX = x;
                                     x += inLines[inLines.Count - 1].value.Width;
+                                    if (inLines[inLines.Count - 1].value.Height > 22) y += inLines[inLines.Count - 1].value.Height;
                                     break;
                                 }
                             case 2:
