@@ -5,6 +5,9 @@ using System.Windows.Forms;
 
 namespace MIND.Library
 {
+    /// <summary>
+    /// Класс многострочного Markdown текста
+    /// </summary>
     class SimpleLines : LinesText
     {
 
@@ -12,28 +15,32 @@ namespace MIND.Library
 
         public SimpleLines(string s)
         {
-            int x = 0 , y = 5, maxx = 0 , count_of_code = 0;
+            int x = 0, y = 5, maxx = 0, count_of_code = 0;
             List<InLineText> inLines = new List<InLineText>();
             s = ToFormatLine(s);
             string[] array = s.Split(new string[] { "\r\n" }, StringSplitOptions.None);
             List<Formated>[] formateds = new List<Formated>[array.Length];
             List<List<Formated>> codes = new List<List<Formated>>();
-            for(int i = 0; i < formateds.Length; i++)
+            for (int i = 0; i < formateds.Length; i++)
             {
                 List<Formated> codes_formated = new List<Formated>();
                 for (int j = 0; j < array[i].Length; j++) codes_formated.Add(new Formated(array[i][j]));
-                int st = 0;
-                while (st < codes_formated.Count)
+                for (int j = 0; j < codes_formated.Count; j++)
                 {
-                    int start, end;
-                    SearchCode(codes_formated.GetRange(st, codes_formated.Count - st), out start, out end);
-                    if (start == -1) break;
-                    codes.Add(new List<Formated>());
-                    for(int j = start; j <= end; j++)
+                    if (codes_formated.Count - j > 2 && codes_formated[j].s == '`')
                     {
-                        codes[codes.Count - 1].Add(new Formated(codes_formated[j].s));
+                        int end;
+                        if (isCode(codes_formated.GetRange(j + 1, codes_formated.Count - (j + 1)), out end))
+                        {
+                            codes.Add(new List<Formated>());
+                            for (int k = end + j + 1; k >= j; k--)
+                            {
+                                codes[codes.Count - 1].Insert(0, new Formated(codes_formated[k].s));
+                                if (codes_formated[k].s == '*' || codes_formated[k].s == '~' || codes_formated[k].s == '_') array[i] = array[i].Remove(k, 1);
+                            }
+                            j = end;
+                        }
                     }
-                    st = end + 1;
                 }
             }
             for (int i = 0; i < array.Length; i++) { formateds[i] = InLineText.SearchFormat(array[i]); }
@@ -43,48 +50,50 @@ namespace MIND.Library
                 {
                     int[] matrix = new int[formateds[i].Count];
                     matrix[0] = 4; matrix[matrix.Length - 1] = -4;
-                    int st = 0;
-                    while (st < formateds[i].Count)
+                    for (int j = 0; j < formateds[i].Count - 1; j++)
                     {
-                        int start, end;
-                        SearchLink(formateds[i].GetRange(st, formateds[i].Count - st), out start, out end);
-                        if (start == -1) break;
-
-                        if (start + st == 0 || matrix[start+st-1] != 2)matrix[start+st] = 1;
-                        if (end + st + 1 == matrix.Length || matrix[end + st + 1] != -2) matrix[end+st] = -1;
-                        if (start+st > 0 && matrix[start+st - 1] == 0) matrix[start+st - 1] = -4;
-                        if (end+st + 1 < matrix.Length && matrix[end+st + 1] == 0) matrix[end+st + 1] = 4;
-                        st += end + 1;
-                    }
-                    st = 0;
-                    while (st < formateds[i].Count)
-                    {
-                        int start, end;
-                        SearchImage(formateds[i].GetRange(st, formateds[i].Count - st), out start, out end);
-                        if (start == -1) break;
-                        for(int j = start + st; j >= 0; j--)
+                        if (formateds[i][j].s == '`')
                         {
-                            if (matrix[j] > 0 && start + st != 0 && (j != 0 || matrix[j] != 4)) break;
-                            if (j == 0)
+                            int last;
+                            if (isCode(formateds[i].GetRange(j + 1, formateds[i].Count - (j + 1)), out last))
                             {
-                                matrix[start + st] = 2; matrix[end + st] = -2;
-                                if (start + st > 0 && matrix[start + st - 1] == 0) matrix[start + st - 1] = -4;
-                                if (end + st + 1 < matrix.Length && matrix[end + st + 1] == 0) matrix[end + st + 1] = 4;
+                                matrix[j] = 3;
+                                matrix[last + j + 1] = -3;
+                                if (j > 0 && matrix[j - 1] == 0) matrix[j - 1] = -4;
+                                if (last + j + 2 < matrix.Length && matrix[last + j + 2] == 0) matrix[last + j + 2] = 4;
+                                j = last + j + 2;
                             }
                         }
-                        st += end + 1;
-                    }
-                    st = 0;
-                    while (st < formateds[i].Count)
-                    {
-                        int start, end;
-                        SearchCode(formateds[i].GetRange(st, formateds[i].Count - st), out start, out end);
-                        if (start == -1) break;
-                        matrix[start+st] = 3;
-                        matrix[end+st] = -3;
-                        if (start+st > 0 && matrix[start+st - 1] == 0) matrix[start+st - 1] = -4;
-                        if (end+st + 1 < matrix.Length && matrix[end+st + 1] == 0) matrix[end+st + 1] = 4;
-                        st += end + 1;
+                        else
+                        {
+                            if (formateds[i][j].s == '!')
+                            {
+                                int last;
+                                if (isImage(formateds[i].GetRange(j + 1, formateds[i].Count - (j + 1)), out last))
+                                {
+                                    matrix[j] = 2;
+                                    matrix[last + j + 1] = -2;
+                                    if (j > 0 && matrix[j - 1] == 0) matrix[j - 1] = -4;
+                                    if (last + j + 2 < matrix.Length && matrix[last + j + 2] == 0) matrix[last + j + 2] = 4;
+                                    j = last + j + 2;
+                                }
+                            }
+                            else
+                            {
+                                if (formateds[i][j].s == '[')
+                                {
+                                    int last;
+                                    if (isLink(formateds[i].GetRange(j + 1, formateds[i].Count - (j + 1)), out last))
+                                    {
+                                        matrix[j] = 1;
+                                        matrix[last + j + 1] = -1;
+                                        if (j > 0 && matrix[j - 1] == 0) matrix[j - 1] = -4;
+                                        if (last + j + 2 < matrix.Length && matrix[last + j + 2] == 0) matrix[last + j + 2] = 4;
+                                        j = last + j + 2;
+                                    }
+                                }
+                            }
+                        }
                     }
                     for (int j = 0; j < matrix.Length; j++)
                     {
@@ -103,18 +112,22 @@ namespace MIND.Library
                                     inLines[inLines.Count - 1].startString = y;
                                     inLines[inLines.Count - 1].startX = x;
                                     x += inLines[inLines.Count - 1].value.Width;
-                                    if (inLines[inLines.Count - 1].value.Height > 22) y += inLines[inLines.Count - 1].value.Height;
+                                    if (inLines[inLines.Count - 1].value.Height > 22)
+                                    {
+                                        y += inLines[inLines.Count - 1].value.Height + 22;
+                                        if (maxx < x) maxx = x;
+                                        x = 0;
+                                    }
                                     break;
                                 }
                             case 2:
                                 {
                                     inLines.Add(new ImageText(formateds[i].GetRange(j, k - j + 1), null));
-                                    y += 11; x = 0;
+                                    y += 22; x = 0;
                                     inLines[inLines.Count - 1].startString = y;
                                     inLines[inLines.Count - 1].startX = x;
                                     if (maxx < inLines[inLines.Count - 1].value.Width) maxx = inLines[inLines.Count - 1].value.Width;
                                     y += inLines[inLines.Count - 1].value.Height;
-                                    y -= 11;
                                     break;
                                 }
                             case 3:
@@ -155,6 +168,11 @@ namespace MIND.Library
             value = new SimpleLinesControl(inLines, maxx, y);
         }
 
+        /// <summary>
+        /// Нормализация вида для многострочного форматирования
+        /// </summary>
+        /// <param name="s"></param>
+        /// <returns></returns>
         private string ToFormatLine(string s)
         {
             s = s.Replace("\\_", Convert.ToString((char)(65535)));
@@ -163,10 +181,10 @@ namespace MIND.Library
             string[] array = s.Split(new string[] { "***" }, StringSplitOptions.None);
             for (int i = 1; i < array.Length; i += 2)
             {
-                if (i + 1 != array.Length && array[i].Length>0 && array[i] != "\r\n")
+                if (i + 1 != array.Length && array[i].Length > 0 && array[i] != "\r\n")
                 {
-                    if (array[i][0] == '\r') { array[i] = array[i].Remove(0, 2); array[i-1] = array[i-1].Insert(array[i-1].Length,"\r\n"); }
-                    if (array[i][array[i].Length-1] == '\n') {array[i] = array[i].Remove(array[i].Length-2, 2); array[i+1] = array[i+1].Insert(0, "\r\n"); }
+                    if (array[i][0] == '\r') { array[i] = array[i].Remove(0, 2); array[i - 1] = array[i - 1].Insert(array[i - 1].Length, "\r\n"); }
+                    if (array[i][array[i].Length - 1] == '\n') { array[i] = array[i].Remove(array[i].Length - 2, 2); array[i + 1] = array[i + 1].Insert(0, "\r\n"); }
                     array[i] = array[i].Replace(System.Environment.NewLine, "***\r\n***");
 
                 }
@@ -291,17 +309,20 @@ namespace MIND.Library
             }
             s = array[0];
             for (int i = 1; i < array.Length; i++) s += "~" + array[i];
-            
+
             s = s.Replace(Convert.ToString((char)(65527)), "~~");
             s = s.Replace(Convert.ToString((char)(65528)), "__");
             s = s.Replace(Convert.ToString((char)(65529)), "**");
             s = s.Replace(Convert.ToString((char)(65530)), "~~~");
             s = s.Replace(Convert.ToString((char)(65531)), "___");
             s = s.Replace(Convert.ToString((char)(65532)), "***");
-            
+
             return s;
         }
 
+        /// <summary>
+        /// Контроллер для многострочного Markdown текста
+        /// </summary>
         public class SimpleLinesControl : UserControl
         {
             public SimpleLinesControl(List<InLineText> value, int x, int y)

@@ -8,6 +8,7 @@ using System.Drawing;
 
 namespace MIND.Library
 {
+
     class Link : InLineText
     {
 
@@ -27,19 +28,22 @@ namespace MIND.Library
             if (!isLink) link = context; context = ""; 
             List<ImageText> imageTexts = new List<ImageText>();
             List<int> q = new List<int>();
-            int st = 1;
-            while (st < s.Count)
+            for (int i = 1; i < s.Count; i++)
             {
-                int start, end;
-                LinesText.SearchImage(s.GetRange(st, count - st), out start, out end);
-                if (start == -1) break;
-                imageTexts.Add(new ImageText(s.GetRange(start+st, end-start+1), link));
-                q.Add(start+st);
-                s.RemoveRange(start+st, end - start + 1);
-                count -= (end - start + 1);
-                st += start;
+                int end;
+                if (s[i].s == '!')
+                {
+                    if (LinesText.isImage(s.GetRange(i + 1, count - i), out end))
+                    {
+                        imageTexts.Add(new ImageText(s.GetRange(i, end + 2), link));
+                        q.Add(i);
+                        s.RemoveRange(i, end + 2);
+                        count -= end + 2;
+                        i--;
+                    }
+                }
             }
-            st = 0;
+            int st = 0;
             for (int i = 1; i < count; i++)
             {
                 string current = "";
@@ -112,7 +116,14 @@ namespace MIND.Library
 
         private void LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-           System.Diagnostics.Process.Start((sender as LinkLabel).Links[0].LinkData.ToString());
+            try
+            {
+                System.Diagnostics.Process.Start((sender as LinkLabel).Links[0].LinkData.ToString());
+            }
+            catch
+            {
+                MessageBox.Show("Не удается перейти по ссылке", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
 
@@ -141,6 +152,7 @@ namespace MIND.Library
                         y += 22;
                         loc = 0;
                         sized = 0;
+                        v[i].Cursor = Cursors.Hand;
                         Controls.Add(v[i]);
                         Controls[Controls.Count - 1].Location = new Point(0, y);
                         y += 22 + Controls[Controls.Count - 1].Height;
