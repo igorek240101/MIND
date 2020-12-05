@@ -12,7 +12,7 @@ namespace MIND.Library
     /// </summary>
     class ImageText : InLineText
     {
-        public ImageText(List<Formated> s, string l)
+        public ImageText(List<Formated> s, string l, float emSize)
         {
             int count = 2;
             for (int i = s.Count-1; i >= 2; i--) if (s[i].s == ']') { count = i; break; };
@@ -38,7 +38,7 @@ namespace MIND.Library
                 {
                     if(LinesText.isLink(s.GetRange(i+1, count - i), out end))
                     {
-                        links.Add(new Link(s.GetRange(i, end+2)));
+                        links.Add(new Link(s.GetRange(i, end+2), emSize));
                         q.Add(i);
                         s.RemoveRange(i, end+2);
                         count -= end + 2;
@@ -65,7 +65,7 @@ namespace MIND.Library
                             current = current.Replace((char)(65535), '_');
                             v[v.Count - 1].Text = current;
                             current = "";
-                            v[v.Count - 1].Font = new Font(Form1.baseFamilyName, Form1.emSize, Format(s[i].isItalic, s[i].isBolt, s[i].isStricedOut, s[i].isUnderLine), System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+                            v[v.Count - 1].Font = new Font(Form1.baseFamilyName, emSize, Format(s[i].isItalic, s[i].isBolt, s[i].isStricedOut, s[i].isUnderLine), System.Drawing.GraphicsUnit.Point, ((byte)(204)));
                             i = j - 1;
                         }
                         v.Add(links[st].value);
@@ -85,7 +85,7 @@ namespace MIND.Library
                         current = current.Replace((char)(65535), '_');
                         v[v.Count - 1].Text = current;
                         current = "";
-                        v[v.Count - 1].Font = new Font(Form1.baseFamilyName, Form1.emSize, Format(s[i].isItalic, s[i].isBolt, s[i].isStricedOut, s[i].isUnderLine), System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+                        v[v.Count - 1].Font = new Font(Form1.baseFamilyName, emSize, Format(s[i].isItalic, s[i].isBolt, s[i].isStricedOut, s[i].isUnderLine), System.Drawing.GraphicsUnit.Point, ((byte)(204)));
                         i = j - 1;
                         break;
                     }

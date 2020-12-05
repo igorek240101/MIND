@@ -14,7 +14,7 @@ namespace MIND.Library
         public int startX;
         public Control value;
 
-        protected FontStyle Format(bool isItalic, bool isBolt, bool isStricedOut, bool isUnderLine)
+        public FontStyle Format(bool isItalic, bool isBolt, bool isStricedOut, bool isUnderLine)
         {
             FontStyle style = FontStyle.Regular;
             if (isItalic) style = style | FontStyle.Italic;

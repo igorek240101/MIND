@@ -32,7 +32,6 @@ namespace MIND.Library
                     int y = 5;
                     for (int j = 0; j < simpleLines.value.Controls.Count; j++)
                     {
-                        Style style1 = new Style();
                         if (y < simpleLines.value.Controls[j].Location.Y)
                         {
                             y = simpleLines.value.Controls[j].Location.Y;
@@ -68,6 +67,51 @@ namespace MIND.Library
                     }
                     document.Add(header);
                 }
+                else
+                {
+                    if (value[i].GetType() == typeof(HeaderLines))
+                    {
+                        HeaderLines simpleLines = value[i] as HeaderLines;
+                        Paragraph header = new Paragraph();
+                        int y = 5;
+                        for (int j = 0; j < simpleLines.value.Controls.Count; j++)
+                        {
+                            if (y < simpleLines.value.Controls[j].Location.Y)
+                            {
+                                y = simpleLines.value.Controls[j].Location.Y;
+                                header.Add("\r\n");
+                            }
+                            if (simpleLines.value.Controls[j].GetType() == typeof(SimpleInLineText.SimpleInLineTextControl))
+                            {
+                                SimpleInLineText.SimpleInLineTextControl control = simpleLines.value.Controls[j] as SimpleInLineText.SimpleInLineTextControl;
+                                CreateText(control, header);
+                            }
+                            else
+                            {
+                                if (simpleLines.value.Controls[j].GetType() == typeof(Link.LinkControl))
+                                {
+                                    Link.LinkControl control = simpleLines.value.Controls[j] as Link.LinkControl;
+                                    CreateLink(document, control, header);
+                                }
+                                else
+                                {
+                                    if (simpleLines.value.Controls[j].GetType() == typeof(ImageText.ImageTextControl))
+                                    {
+                                        CreateImage(document, simpleLines.value.Controls[j] as ImageText.ImageTextControl, false, ref header);
+                                    }
+                                    else
+                                    {
+                                        if (simpleLines.value.Controls[j].GetType() == typeof(Label))
+                                        {
+                                            CreateCode(simpleLines.value.Controls[j] as Label, header);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        document.Add(header);
+                    }
+                }
             }
             document.Close();
         }
@@ -80,7 +124,7 @@ namespace MIND.Library
                 Label label = control.Controls[k] as Label;
                 Style style = new Style();
                 style.SetFont(PdfFontFactory.CreateFont("C:\\Windows\\Fonts\\times.ttf", "Cp1251", true));
-                style.SetFontSize(14.25f);
+                style.SetFontSize(label.Font.Size);
                 if (label.Font.Bold) style.SetBold();
                 if (label.Font.Italic) style.SetItalic();
                 if (label.Font.Underline) style.SetUnderline();
@@ -104,7 +148,7 @@ namespace MIND.Library
                     iText.Layout.Element.Link link = new iText.Layout.Element.Link(label.Text, annotation);
                     Style style = new Style();
                     style.SetFont(PdfFontFactory.CreateFont("C:\\Windows\\Fonts\\times.ttf", "Cp1251", true));
-                    style.SetFontSize(14.25f);
+                    style.SetFontSize(label.Font.Size);
                     if (label.Font.Bold) style.SetBold();
                     if (label.Font.Italic) style.SetItalic();
                     style.SetUnderline();
@@ -157,7 +201,7 @@ namespace MIND.Library
                     Label label = imgControl.Controls[i] as Label;
                     Style style = new Style();
                     style.SetFont(PdfFontFactory.CreateFont("C:\\Windows\\Fonts\\times.ttf", "Cp1251", true));
-                    style.SetFontSize(14.25f);
+                    style.SetFontSize(label.Font.Size);
                     if (label.Font.Bold) style.SetBold();
                     if (label.Font.Italic) style.SetItalic();
                     if (label.Font.Underline) style.SetUnderline();
@@ -179,7 +223,7 @@ namespace MIND.Library
         {
             Style style = new Style();
             style.SetFont(PdfFontFactory.CreateFont("C:\\Windows\\Fonts\\consola.ttf", "Cp1251", true));
-            style.SetFontSize(14.25f);
+            style.SetFontSize(label.Font.Size);
             style.SetBackgroundColor(ColorConstants.LIGHT_GRAY);
             style.SetFontColor(ColorConstants.DARK_GRAY);
             header.Add(new Text(label.Text).AddStyle(style));

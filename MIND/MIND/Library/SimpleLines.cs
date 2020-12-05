@@ -11,9 +11,7 @@ namespace MIND.Library
     class SimpleLines : LinesText
     {
 
-        public SimpleLinesControl value;
-
-        public SimpleLines(string s)
+        public SimpleLines(string s, int st) : base (st)
         {
             int x = 0, y = 5, maxx = 0, count_of_code = 0;
             List<InLineText> inLines = new List<InLineText>();
@@ -111,7 +109,7 @@ namespace MIND.Library
                         {
                             case 1:
                                 {
-                                    inLines.Add(new Link(formateds[i].GetRange(j, k - j + 1)));
+                                    inLines.Add(new Link(formateds[i].GetRange(j, k - j + 1), Form1.emSize));
                                     inLines[inLines.Count - 1].startString = y;
                                     inLines[inLines.Count - 1].startX = x;
                                     x += inLines[inLines.Count - 1].value.Width;
@@ -125,7 +123,7 @@ namespace MIND.Library
                                 }
                             case 2:
                                 {
-                                    inLines.Add(new ImageText(formateds[i].GetRange(j, k - j + 1), null));
+                                    inLines.Add(new ImageText(formateds[i].GetRange(j, k - j + 1), null, Form1.emSize));
                                     y += 22; x = 0;
                                     inLines[inLines.Count - 1].startString = y;
                                     inLines[inLines.Count - 1].startX = x;
@@ -135,7 +133,7 @@ namespace MIND.Library
                                 }
                             case 3:
                                 {
-                                    inLines.Add(new InLineCode(codes[count_of_code]));
+                                    inLines.Add(new InLineCode(codes[count_of_code], Form1.emSize));
                                     count_of_code++;
                                     inLines[inLines.Count - 1].startString = y;
                                     inLines[inLines.Count - 1].startX = x;
@@ -145,7 +143,7 @@ namespace MIND.Library
                                 }
                             case 4:
                                 {
-                                    inLines.Add(new SimpleInLineText(formateds[i].GetRange(j, k - j + 1)));
+                                    inLines.Add(new SimpleInLineText(formateds[i].GetRange(j, k - j + 1), Form1.emSize));
                                     inLines[inLines.Count - 1].startString = y;
                                     inLines[inLines.Count - 1].startX = x;
                                     x += inLines[inLines.Count - 1].value.Width;
@@ -158,7 +156,7 @@ namespace MIND.Library
                 }
                 else
                 {
-                    inLines.Add(new SimpleInLineText(formateds[i]));
+                    inLines.Add(new SimpleInLineText(formateds[i], Form1.emSize));
                     inLines[inLines.Count - 1].startString = y;
                     inLines[inLines.Count - 1].startX = x;
                     x += inLines[inLines.Count - 1].value.Width;

@@ -11,7 +11,7 @@ namespace MIND.Library
     class SimpleInLineText:InLineText
     {
 
-        public SimpleInLineText(List<Formated> s)
+        public SimpleInLineText(List<Formated> s , float emSize)
         {
             List<Label> v = new List<Label>();
             for (int i = 0; i < s.Count; i++)
@@ -32,13 +32,13 @@ namespace MIND.Library
                         current = current.Replace((char)(65535), '_');
                         v[v.Count - 1].Text = current;
                         current = "";
-                        v[v.Count - 1].Font = new Font(Form1.baseFamilyName, Form1.emSize, Format(s[i].isItalic, s[i].isBolt, s[i].isStricedOut, s[i].isUnderLine), System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+                        v[v.Count - 1].Font = new Font(Form1.baseFamilyName, emSize, Format(s[i].isItalic, s[i].isBolt, s[i].isStricedOut, s[i].isUnderLine), System.Drawing.GraphicsUnit.Point, ((byte)(204)));
                         i = j-1;
                         break;
                     }    
                 }
             }
-            value = new SimpleInLineTextControl(v);
+            value = new SimpleInLineTextControl(v, (int)(emSize));
 
         }
 
@@ -46,7 +46,7 @@ namespace MIND.Library
 
         public class SimpleInLineTextControl : UserControl
         {
-            public SimpleInLineTextControl(List<Label> v)
+            public SimpleInLineTextControl(List<Label> v, int emsized)
             {
                 int loc = 0, sized = 0;
                 int w = 0;
@@ -59,7 +59,7 @@ namespace MIND.Library
                     loc = loc + sized;
                     sized = Controls[Controls.Count - 1].Width - 4;
                 }
-                Size = new Size(w, 22);
+                Size = new Size(w, emsized*2);
             }
         }
 

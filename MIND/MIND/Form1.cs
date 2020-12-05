@@ -1,10 +1,10 @@
 ﻿using MIND.Library;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
-using System.Collections.Generic;
 
 namespace MIND
 {
@@ -37,8 +37,13 @@ namespace MIND
             textBox1.Location = new Point(5, 5);
             textBox1.Size = new Size(splitContainer1.Panel1.Width - 25, 29);
             main = this;
-            simpleLines = new SimpleLines(textBox1.Text);
+            simpleLines = new SimpleLines(textBox1.Text, 0);
+            linesTexts.Add(new HeaderLines("#### Заголовок1", 0));
             linesTexts.Add(simpleLines);
+            splitContainer1.Panel2.Controls.Add(linesTexts[0].value);
+            splitContainer1.Panel2.Controls.Add(linesTexts[1].value);
+            linesTexts[0].value.Location = new Point(0, 10);
+            linesTexts[1].value.Location = new Point(0, linesTexts[0].value.Location.Y + linesTexts[0].value.Height);
         }
 
         private void предпросмотрHtmlToolStripMenuItem_Click(object sender, EventArgs e)
@@ -144,11 +149,7 @@ namespace MIND
             }
             else
             {
-                simpleLines = new SimpleLines(textBox1.Text);
-                simpleLines.value.Location = new Point(10, 0);
-                splitContainer1.Panel2.Controls.Clear();
-                splitContainer1.Panel2.Controls.Add(simpleLines.value);
-                linesTexts[0] = simpleLines;
+                MyResetText();
             }
         }
 
@@ -157,12 +158,51 @@ namespace MIND
             timer.Stop();
 
             textBox_Resize();
+            MyResetText();
+        }
 
-            simpleLines = new SimpleLines(textBox1.Text);
-            simpleLines.value.Location = new Point(10, 0);
-            splitContainer1.Panel2.Controls.Clear();
-            splitContainer1.Panel2.Controls.Add(simpleLines.value);
-            linesTexts[0] = simpleLines;
+        private void MyResetText()
+        {
+            if (linesTexts.Count > 1)
+            {
+                int start = textBox1.Text.Substring(0, textBox1.SelectionStart).Split('\r').Length;
+                int end = textBox1.Text.Substring(0, textBox1.SelectionStart+textBox1.SelectionLength).Split('\r').Length;
+                for(int i = 0; i < linesTexts.Count; i++)
+                {
+                    if(linesTexts[i].startString >= start)
+                    {
+                        if (i != 0)
+                        {
+                            start = linesTexts[i - 1].startString;
+                        }
+                        else start = 0;
+                        break;
+                    }
+                }
+                for (int i = start; i < linesTexts.Count;)
+                {
+                    if (linesTexts[i].startString >= end)
+                    {
+                        if (i+1 < linesTexts.Count)
+                        {
+                            linesTexts.RemoveAt(i);
+                            end = linesTexts[i].startString-1;
+                        }
+                        else end = textBox1.Text.Split('\r').Length-1;
+                        linesTexts.RemoveAt(i);
+                        break;
+                    }
+                    linesTexts.RemoveAt(i);
+                }
+            }
+            else
+            {
+                simpleLines = new SimpleLines(textBox1.Text, 2);
+                simpleLines.value.Location = new Point(10, 0);
+                splitContainer1.Panel2.Controls.Clear();
+                splitContainer1.Panel2.Controls.Add(simpleLines.value);
+                linesTexts[0] = simpleLines;
+            }
         }
 
         private void новыйФайлToolStripMenuItem_Click(object sender, EventArgs e)

@@ -1,10 +1,18 @@
 ﻿using System.Collections.Generic;
+using System.Windows.Forms;
 
 namespace MIND.Library
 {
     class LinesText
     {
-        protected int startString;
+        public int startString;
+
+        public Control value;
+
+        public LinesText(int st)
+        {
+            startString = st;
+        }
 
 
         public static bool isLink(List<Formated> value, out int lastpos)

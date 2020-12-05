@@ -94,6 +94,7 @@
     <Compile Include="ImageInsert.Designer.cs">
       <DependentUpon>ImageInsert.cs</DependentUpon>
     </Compile>
+    <Compile Include="Library\HeaderLines.cs" />
     <Compile Include="Library\ImageText.cs" />
     <Compile Include="Library\InLineCode.cs" />
     <Compile Include="Library\InLineText.cs" />
