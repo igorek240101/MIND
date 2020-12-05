@@ -103,7 +103,7 @@ namespace MIND.Library
                     annotation.SetContents(label.ContextMenuStrip.Text);
                     iText.Layout.Element.Link link = new iText.Layout.Element.Link(label.Text, annotation);
                     Style style = new Style();
-                    style.SetFont(PdfFontFactory.CreateFont(FontConstants.TIMES_ROMAN, FontEncoding.FONT_SPECIFIC, true));
+                    style.SetFont(PdfFontFactory.CreateFont("C:\\Windows\\Fonts\\times.ttf", "Cp1251", true));
                     style.SetFontSize(14.25f);
                     if (label.Font.Bold) style.SetBold();
                     if (label.Font.Italic) style.SetItalic();
@@ -156,7 +156,7 @@ namespace MIND.Library
                 {
                     Label label = imgControl.Controls[i] as Label;
                     Style style = new Style();
-                    style.SetFont(PdfFontFactory.CreateFont(FontConstants.TIMES_ROMAN, FontEncoding.FONT_SPECIFIC, true));
+                    style.SetFont(PdfFontFactory.CreateFont("C:\\Windows\\Fonts\\times.ttf", "Cp1251", true));
                     style.SetFontSize(14.25f);
                     if (label.Font.Bold) style.SetBold();
                     if (label.Font.Italic) style.SetItalic();
@@ -178,7 +178,7 @@ namespace MIND.Library
         private static void CreateCode(Label label, Paragraph header)
         {
             Style style = new Style();
-            style.SetFont(PdfFontFactory.CreateFont("C:\\Windows\\Fonts\\consola.ttf", FontEncoding.FONT_SPECIFIC, true));
+            style.SetFont(PdfFontFactory.CreateFont("C:\\Windows\\Fonts\\consola.ttf", "Cp1251", true));
             style.SetFontSize(14.25f);
             style.SetBackgroundColor(ColorConstants.LIGHT_GRAY);
             style.SetFontColor(ColorConstants.DARK_GRAY);
