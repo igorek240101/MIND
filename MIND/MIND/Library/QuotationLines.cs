@@ -3,26 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Drawing;
 using System.Windows.Forms;
+using System.Drawing;
 
 namespace MIND.Library
 {
-    class HeaderLines: LinesText
+    class QuotationLines : LinesText
     {
 
-        public static float[] sized = new float[] { 36, 28, 24, 20, 18, 16 };
-
-        public HeaderLines(string s, int st) : base(st)
+        public QuotationLines(string s, int st) : base(st)
         {
-            int count = 0;
-            try
-            {
-                while (s[count] == '#' && count < 6)count++;
-            }
-            catch { return; }
-            s = s.Remove(0, count--);
-            int x = 0, y = 5, maxx = 0, count_of_code = 0;
+            s = s.Substring(1, s.Length - 1);
+            s = s.Replace("\r\n>", "\r\n");
+            int x = 20, y = 5, maxx = 0, count_of_code = 0;
             List<InLineText> inLines = new List<InLineText>();
             string[] array = s.Split(new string[] { "\r\n" }, StringSplitOptions.None);
             List<Formated>[] formateds = new List<Formated>[array.Length];
@@ -117,22 +110,22 @@ namespace MIND.Library
                         {
                             case 1:
                                 {
-                                    inLines.Add(new Link(formateds[i].GetRange(j, k - j + 1), sized[count], FontStyle.Regular));
+                                    inLines.Add(new Link(formateds[i].GetRange(j, k - j + 1), Form1.emSize, FontStyle.Italic));
                                     inLines[inLines.Count - 1].startString = y;
                                     inLines[inLines.Count - 1].startX = x;
                                     x += inLines[inLines.Count - 1].value.Width;
-                                    if (inLines[inLines.Count - 1].value.Height > 22)
+                                    if (inLines[inLines.Count - 1].value.Height >   (int)(Form1.emSize * 2))
                                     {
-                                        y += inLines[inLines.Count - 1].value.Height + 22;
+                                        y += inLines[inLines.Count - 1].value.Height + (int)(Form1.emSize * 2);
                                         if (maxx < x) maxx = x;
-                                        x = 0;
+                                        x = 20;
                                     }
                                     break;
                                 }
                             case 2:
                                 {
-                                    inLines.Add(new ImageText(formateds[i].GetRange(j, k - j + 1), null, sized[count], FontStyle.Regular));
-                                    y += (int)sized[count] * 2; x = 0;
+                                    inLines.Add(new ImageText(formateds[i].GetRange(j, k - j + 1), null, Form1.emSize, FontStyle.Italic));
+                                    y += (int)(Form1.emSize * 2); x = 20;
                                     inLines[inLines.Count - 1].startString = y;
                                     inLines[inLines.Count - 1].startX = x;
                                     if (maxx < inLines[inLines.Count - 1].value.Width) maxx = inLines[inLines.Count - 1].value.Width;
@@ -141,7 +134,7 @@ namespace MIND.Library
                                 }
                             case 3:
                                 {
-                                    inLines.Add(new InLineCode(codes[count_of_code], sized[count], FontStyle.Regular));
+                                    inLines.Add(new InLineCode(codes[count_of_code], Form1.emSize, FontStyle.Italic));
                                     count_of_code++;
                                     inLines[inLines.Count - 1].startString = y;
                                     inLines[inLines.Count - 1].startX = x;
@@ -151,7 +144,7 @@ namespace MIND.Library
                                 }
                             case 4:
                                 {
-                                    inLines.Add(new SimpleInLineText(formateds[i].GetRange(j, k - j + 1), sized[count], FontStyle.Regular));
+                                    inLines.Add(new SimpleInLineText(formateds[i].GetRange(j, k - j + 1), Form1.emSize, FontStyle.Italic));
                                     inLines[inLines.Count - 1].startString = y;
                                     inLines[inLines.Count - 1].startX = x;
                                     x += inLines[inLines.Count - 1].value.Width;
@@ -164,23 +157,23 @@ namespace MIND.Library
                 }
                 else
                 {
-                    inLines.Add(new SimpleInLineText(formateds[i], sized[count], FontStyle.Regular));
+                    inLines.Add(new SimpleInLineText(formateds[i], Form1.emSize, FontStyle.Italic));
                     inLines[inLines.Count - 1].startString = y;
                     inLines[inLines.Count - 1].startX = x;
                     x += inLines[inLines.Count - 1].value.Width;
                 }
-                y += (int)sized[count] * 2;
+                y += (int)(Form1.emSize*2);
                 if (maxx < x) maxx = x;
-                x = 0;
+                x = 20;
             }
 
-            value = new HeaderLinesControl(inLines, maxx, y);
+            value = new QuotationLinesControl(inLines, maxx, y);
         }
 
 
-        public class HeaderLinesControl : UserControl
+        public class QuotationLinesControl : UserControl
         {
-            public HeaderLinesControl(List<InLineText> value, int x, int y)
+            public QuotationLinesControl(List<InLineText> value, int x, int y)
             {
                 Size = new Size(x, y);
                 for (int i = 0; i < value.Count; i++)
@@ -188,7 +181,21 @@ namespace MIND.Library
                     Controls.Add(value[i].value);
                     Controls[Controls.Count - 1].Location = new Point(value[i].startX, value[i].startString);
                 }
+                Paint += new PaintEventHandler(Paint_Q);
+                Update();
             }
+
+
+            private void Paint_Q(object sender, PaintEventArgs e)
+            {
+                Graphics g = CreateGraphics();
+                g.DrawLine(new Pen(Color.Gray, 4), 12, 0, 12, Height);
+            }
+
+
         }
+
+
+
     }
 }

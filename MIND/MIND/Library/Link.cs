@@ -12,7 +12,7 @@ namespace MIND.Library
     class Link : InLineText
     {
 
-        public Link(List<Formated> s, float emSize)
+        public Link(List<Formated> s, float emSize, FontStyle style)
         {
             int count = 1;
             for (int i = s.Count-1; i >= 0; i--) if (s[i].s == ']') { count = i; break;};
@@ -36,7 +36,7 @@ namespace MIND.Library
                 {
                     if (LinesText.isImage(s.GetRange(i + 1, count - i), out end))
                     {
-                        imageTexts.Add(new ImageText(s.GetRange(i, end + 2), link, Form1.emSize));
+                        imageTexts.Add(new ImageText(s.GetRange(i, end + 2), link, Form1.emSize, style));
                         q.Add(i);
                         s.RemoveRange(i, end + 2);
                         count -= end + 2;
@@ -69,7 +69,7 @@ namespace MIND.Library
                             current = current.Replace((char)(65535), '_');
                             v[v.Count - 1].Text = current;
                             current = "";
-                            v[v.Count - 1].Font = new Font(Form1.baseFamilyName, emSize, Format(s[i].isItalic, s[i].isBolt, s[i].isStricedOut, s[i].isUnderLine), System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+                            v[v.Count - 1].Font = new Font(Form1.baseFamilyName, emSize, style | Format(s[i].isItalic, s[i].isBolt, s[i].isStricedOut, s[i].isUnderLine), System.Drawing.GraphicsUnit.Point, ((byte)(204)));
                             i = j - 1;
                         }
                         v.Add(imageTexts[st].value);
@@ -95,7 +95,7 @@ namespace MIND.Library
                         current = current.Replace((char)(65535), '_');
                         v[v.Count - 1].Text = current;
                         current = "";
-                        v[v.Count - 1].Font = new Font(Form1.baseFamilyName, emSize, Format(s[i].isItalic, s[i].isBolt, s[i].isStricedOut, s[i].isUnderLine), System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+                        v[v.Count - 1].Font = new Font(Form1.baseFamilyName, emSize, style | Format(s[i].isItalic, s[i].isBolt, s[i].isStricedOut, s[i].isUnderLine), System.Drawing.GraphicsUnit.Point, ((byte)(204)));
                         i = j - 1;
                         break;
                     }
@@ -161,7 +161,7 @@ namespace MIND.Library
                         w = 0;
                     }
                 }
-                Size = new Size((int)(max), y+emsized*2);
+                Size = new Size((int)(max), y + emsized * 2);
             }
         }
     } 

@@ -109,13 +109,13 @@ namespace MIND.Library
                         {
                             case 1:
                                 {
-                                    inLines.Add(new Link(formateds[i].GetRange(j, k - j + 1), Form1.emSize));
+                                    inLines.Add(new Link(formateds[i].GetRange(j, k - j + 1), Form1.emSize, FontStyle.Regular));
                                     inLines[inLines.Count - 1].startString = y;
                                     inLines[inLines.Count - 1].startX = x;
                                     x += inLines[inLines.Count - 1].value.Width;
-                                    if (inLines[inLines.Count - 1].value.Height > 22)
+                                    if (inLines[inLines.Count - 1].value.Height > Form1.emSize * 2)
                                     {
-                                        y += inLines[inLines.Count - 1].value.Height + 22;
+                                        y += inLines[inLines.Count - 1].value.Height + (int)(Form1.emSize * 2);
                                         if (maxx < x) maxx = x;
                                         x = 0;
                                     }
@@ -123,8 +123,8 @@ namespace MIND.Library
                                 }
                             case 2:
                                 {
-                                    inLines.Add(new ImageText(formateds[i].GetRange(j, k - j + 1), null, Form1.emSize));
-                                    y += 22; x = 0;
+                                    inLines.Add(new ImageText(formateds[i].GetRange(j, k - j + 1), null, Form1.emSize, FontStyle.Regular));
+                                    y += (int)(Form1.emSize * 2); x = 0;
                                     inLines[inLines.Count - 1].startString = y;
                                     inLines[inLines.Count - 1].startX = x;
                                     if (maxx < inLines[inLines.Count - 1].value.Width) maxx = inLines[inLines.Count - 1].value.Width;
@@ -133,7 +133,7 @@ namespace MIND.Library
                                 }
                             case 3:
                                 {
-                                    inLines.Add(new InLineCode(codes[count_of_code], Form1.emSize));
+                                    inLines.Add(new InLineCode(codes[count_of_code], Form1.emSize, FontStyle.Regular));
                                     count_of_code++;
                                     inLines[inLines.Count - 1].startString = y;
                                     inLines[inLines.Count - 1].startX = x;
@@ -143,7 +143,7 @@ namespace MIND.Library
                                 }
                             case 4:
                                 {
-                                    inLines.Add(new SimpleInLineText(formateds[i].GetRange(j, k - j + 1), Form1.emSize));
+                                    inLines.Add(new SimpleInLineText(formateds[i].GetRange(j, k - j + 1), Form1.emSize, FontStyle.Regular));
                                     inLines[inLines.Count - 1].startString = y;
                                     inLines[inLines.Count - 1].startX = x;
                                     x += inLines[inLines.Count - 1].value.Width;
@@ -156,12 +156,12 @@ namespace MIND.Library
                 }
                 else
                 {
-                    inLines.Add(new SimpleInLineText(formateds[i], Form1.emSize));
+                    inLines.Add(new SimpleInLineText(formateds[i], Form1.emSize, FontStyle.Regular));
                     inLines[inLines.Count - 1].startString = y;
                     inLines[inLines.Count - 1].startX = x;
                     x += inLines[inLines.Count - 1].value.Width;
                 }
-                y += 22;
+                y += (int)(Form1.emSize * 2);
                 if (maxx < x) maxx = x;
                 x = 0;
             }

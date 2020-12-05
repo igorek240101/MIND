@@ -15,9 +15,13 @@ namespace MIND
 
         public static Form1 main;
 
+
+        public static int w_len;
+
         public static string baseFamilyName = "Times New Roman";
         public static float emSize = 14.25F;
         List<LinesText> linesTexts = new List<LinesText>();
+        public static List<LineLinesControl> lineLines = new List<LineLinesControl>();
 
         string file = null;
         bool isRedactor = true;
@@ -37,13 +41,38 @@ namespace MIND
             textBox1.Location = new Point(5, 5);
             textBox1.Size = new Size(splitContainer1.Panel1.Width - 25, 29);
             main = this;
-            simpleLines = new SimpleLines(textBox1.Text, 0);
-            linesTexts.Add(new HeaderLines("#### Заголовок1", 0));
+            w_len = splitContainer1.Panel2.Width;
+            simpleLines = new SimpleLines(textBox1.Text, 8);
+            linesTexts.Add(new QuotationLines(">Стэк — это такой товарищ,\r\n>который не знает меры.\r\n>Он придёт в любой бар и напьётся в хламину.\r\n>\r\n>\r\n>Спиридонов Р.Е.", 0));
+            linesTexts.Add(new HeaderLines("#### Заголовок1", 1));
+            linesTexts.Add(new LineLines("***", 2));
+            linesTexts.Add(new LineLines("---", 3));
+            linesTexts.Add(new LineLines("___", 4));
+            linesTexts[2].value.Size = new Size(splitContainer1.Panel2.Width-20, 20);
+            linesTexts[3].value.Size = new Size(splitContainer1.Panel2.Width-20, 20);
+            linesTexts[4].value.Size = new Size(splitContainer1.Panel2.Width-20, 20);
+            linesTexts.Add(new LineCode("```\r\nstring s = Console.ReadLine();\r\ns = s.Reverse();\r\nConsole.WriteLine(s)\r\n```", 5));
+            linesTexts.Add(new ChekLine("[X] Написать код", 6));
+            linesTexts.Add(new TableLines("| Plugin | README |\r\n| :------: | ------ |\r\n| Dropbox | dsfsdfsdfs |\r\n| GitHub | [plugins / github / README.md][PlGh] |\r\n| Google Drive | [plugins / googledrive / README.md][PlGd] |\r\n| OneDrive | [plugins / onedrive / README.md][PlOd] |\r\n| Medium | [plugins / medium / README.md][PlMe] |\r\n| ![](a) | ![](a)| ", 7));
             linesTexts.Add(simpleLines);
             splitContainer1.Panel2.Controls.Add(linesTexts[0].value);
             splitContainer1.Panel2.Controls.Add(linesTexts[1].value);
-            linesTexts[0].value.Location = new Point(0, 10);
-            linesTexts[1].value.Location = new Point(0, linesTexts[0].value.Location.Y + linesTexts[0].value.Height);
+            splitContainer1.Panel2.Controls.Add(linesTexts[2].value);
+            splitContainer1.Panel2.Controls.Add(linesTexts[3].value);
+            splitContainer1.Panel2.Controls.Add(linesTexts[4].value);
+            splitContainer1.Panel2.Controls.Add(linesTexts[5].value);
+            splitContainer1.Panel2.Controls.Add(linesTexts[6].value);
+            splitContainer1.Panel2.Controls.Add(linesTexts[7].value);
+            splitContainer1.Panel2.Controls.Add(linesTexts[8].value);
+            linesTexts[0].value.Location = new Point(10, 10);
+            linesTexts[1].value.Location = new Point(10, linesTexts[0].value.Location.Y + linesTexts[0].value.Height);
+            linesTexts[2].value.Location = new Point(10, linesTexts[1].value.Location.Y + linesTexts[1].value.Height);
+            linesTexts[3].value.Location = new Point(10, linesTexts[2].value.Location.Y + linesTexts[2].value.Height);
+            linesTexts[4].value.Location = new Point(10, linesTexts[3].value.Location.Y + linesTexts[3].value.Height);
+            linesTexts[5].value.Location = new Point(10, linesTexts[4].value.Location.Y + linesTexts[4].value.Height);
+            linesTexts[6].value.Location = new Point(10, linesTexts[5].value.Location.Y + linesTexts[5].value.Height);
+            linesTexts[7].value.Location = new Point(10, linesTexts[6].value.Location.Y + linesTexts[6].value.Height);
+            linesTexts[8].value.Location = new Point(10, linesTexts[7].value.Location.Y + linesTexts[7].value.Height);
         }
 
         private void предпросмотрHtmlToolStripMenuItem_Click(object sender, EventArgs e)
@@ -140,6 +169,7 @@ namespace MIND
 
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
+            Console.WriteLine(splitContainer1.Panel2.Width);
             textBox_Resize();
             if (textBox1.Text.Length > 200)
             {

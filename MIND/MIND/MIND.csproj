@@ -94,15 +94,20 @@
     <Compile Include="ImageInsert.Designer.cs">
       <DependentUpon>ImageInsert.cs</DependentUpon>
     </Compile>
+    <Compile Include="Library\ChekLine.cs" />
     <Compile Include="Library\HeaderLines.cs" />
     <Compile Include="Library\ImageText.cs" />
     <Compile Include="Library\InLineCode.cs" />
     <Compile Include="Library\InLineText.cs" />
+    <Compile Include="Library\LineCode.cs" />
+    <Compile Include="Library\LineLines.cs" />
     <Compile Include="Library\LinesText.cs" />
     <Compile Include="Library\Link.cs" />
     <Compile Include="Library\PDF_Creator.cs" />
+    <Compile Include="Library\QuotationLines.cs" />
     <Compile Include="Library\SimpleInLineText.cs" />
     <Compile Include="Library\SimpleLines.cs" />
+    <Compile Include="Library\TableLines.cs" />
     <Compile Include="LinkInsert.cs">
       <SubType>Form</SubType>
     </Compile>
