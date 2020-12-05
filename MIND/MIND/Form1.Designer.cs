@@ -118,7 +118,7 @@ namespace MIND
             this.вставитьToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
-            this.contextMenuStrip1.Size = new System.Drawing.Size(181, 48);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(123, 26);
             // 
             // вставитьToolStripMenuItem
             // 
@@ -214,8 +214,9 @@ namespace MIND
             // экспортВPDFToolStripMenuItem
             // 
             this.экспортВPDFToolStripMenuItem.Name = "экспортВPDFToolStripMenuItem";
-            this.экспортВPDFToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
+            this.экспортВPDFToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.экспортВPDFToolStripMenuItem.Text = "Экспорт в PDF";
+            this.экспортВPDFToolStripMenuItem.Click += new System.EventHandler(this.экспортВPDFToolStripMenuItem_Click);
             // 
             // видToolStripMenuItem
             // 

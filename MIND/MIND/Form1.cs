@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
+using System.Collections.Generic;
 
 namespace MIND
 {
@@ -16,7 +17,7 @@ namespace MIND
 
         public static string baseFamilyName = "Times New Roman";
         public static float emSize = 14.25F;
-
+        List<LinesText> linesTexts = new List<LinesText>();
 
         string file = null;
         bool isRedactor = true;
@@ -37,6 +38,7 @@ namespace MIND
             textBox1.Size = new Size(splitContainer1.Panel1.Width - 25, 29);
             main = this;
             simpleLines = new SimpleLines(textBox1.Text);
+            linesTexts.Add(simpleLines);
         }
 
         private void предпросмотрHtmlToolStripMenuItem_Click(object sender, EventArgs e)
@@ -133,6 +135,7 @@ namespace MIND
 
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
+            textBox_Resize();
             if (textBox1.Text.Length > 200)
             {
 
@@ -141,11 +144,11 @@ namespace MIND
             }
             else
             {
-                textBox_Resize();
                 simpleLines = new SimpleLines(textBox1.Text);
                 simpleLines.value.Location = new Point(10, 0);
                 splitContainer1.Panel2.Controls.Clear();
                 splitContainer1.Panel2.Controls.Add(simpleLines.value);
+                linesTexts[0] = simpleLines;
             }
         }
 
@@ -159,6 +162,7 @@ namespace MIND
             simpleLines.value.Location = new Point(10, 0);
             splitContainer1.Panel2.Controls.Clear();
             splitContainer1.Panel2.Controls.Add(simpleLines.value);
+            linesTexts[0] = simpleLines;
         }
 
         private void новыйФайлToolStripMenuItem_Click(object sender, EventArgs e)
@@ -278,6 +282,11 @@ namespace MIND
             int start = textBox1.SelectionStart, end = textBox1.SelectionLength + textBox1.SelectionStart;
             textBox1.Text = textBox1.Text.Insert(end, "~~~");
             textBox1.Text = textBox1.Text.Insert(start, "~~~");
+        }
+
+        private void экспортВPDFToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            PDF_Creator.Create(linesTexts);
         }
     }
 }

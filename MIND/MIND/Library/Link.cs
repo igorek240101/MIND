@@ -21,11 +21,12 @@ namespace MIND.Library
             string link = "", context = "";
             for (int k = s.Count-2; k >= count + 2; k--)
             {
-                if (s[k-1].s == ' ' && s[k].s == '\"') { isLink = true; k -= 3; }
+                if (s[k-1].s == ' ' && s[k].s == '\"') { isLink = true; k -= 2; }
                 if (isLink) link = s[k].s + link;
                 else context = s[k].s + context;
             }
-            if (!isLink) link = context; context = ""; 
+            if (!isLink) { link = context; context = ""; }
+            else try { context = context.Remove(context.Length - 1, 1); } catch { }
             List<ImageText> imageTexts = new List<ImageText>();
             List<int> q = new List<int>();
             for (int i = 1; i < s.Count; i++)

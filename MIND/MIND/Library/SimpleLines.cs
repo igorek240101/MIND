@@ -38,7 +38,7 @@ namespace MIND.Library
                                 codes[codes.Count - 1].Insert(0, new Formated(codes_formated[k].s));
                                 if (codes_formated[k].s == '*' || codes_formated[k].s == '~' || codes_formated[k].s == '_') array[i] = array[i].Remove(k, 1);
                             }
-                            j = end;
+                            j += end;
                         }
                     }
                 }
@@ -61,7 +61,8 @@ namespace MIND.Library
                                 matrix[last + j + 1] = -3;
                                 if (j > 0 && matrix[j - 1] == 0) matrix[j - 1] = -4;
                                 if (last + j + 2 < matrix.Length && matrix[last + j + 2] == 0) matrix[last + j + 2] = 4;
-                                j = last + j + 2;
+                                j = last + j + 1;
+                                continue;
                             }
                         }
                         else
@@ -75,7 +76,8 @@ namespace MIND.Library
                                     matrix[last + j + 1] = -2;
                                     if (j > 0 && matrix[j - 1] == 0) matrix[j - 1] = -4;
                                     if (last + j + 2 < matrix.Length && matrix[last + j + 2] == 0) matrix[last + j + 2] = 4;
-                                    j = last + j + 2;
+                                    j = last + j + 1;
+                                    continue;
                                 }
                             }
                             else
@@ -89,7 +91,8 @@ namespace MIND.Library
                                         matrix[last + j + 1] = -1;
                                         if (j > 0 && matrix[j - 1] == 0) matrix[j - 1] = -4;
                                         if (last + j + 2 < matrix.Length && matrix[last + j + 2] == 0) matrix[last + j + 2] = 4;
-                                        j = last + j + 2;
+                                        j = last + j + 1;
+                                        continue;
                                     }
                                 }
                             }
