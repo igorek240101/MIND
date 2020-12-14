@@ -23,7 +23,7 @@ namespace MIND.Library
             }
             for (int i = 0; i < array.Length; i++)
             {
-                inLineCodes.Add(new InLineCode(formateds[i], Form1.emSize, System.Drawing.FontStyle.Regular));
+                inLineCodes.Add(new InLineCode(formateds[i], Form1.emSize));
                 inLineCodes[inLineCodes.Count - 1].startString = y;
                 inLineCodes[inLineCodes.Count - 1].startX = 50;
                 y += (int)(Form1.emSize * 2);
@@ -45,7 +45,7 @@ namespace MIND.Library
                     Controls.Add(value[i].value);
                     Controls[Controls.Count - 1].Location = new Point(value[i].startX, value[i].startString);
                     Label label = new Label();
-                    label.Text = Convert.ToString(i+1);
+                    label.Text = i<999? Convert.ToString(i + 1): "###";
                     label.Font = new Font(Form1.baseFamilyName, Form1.emSize, FontStyle.Regular, GraphicsUnit.Point);
                     label.Width = 40;
                     Controls.Add(label);

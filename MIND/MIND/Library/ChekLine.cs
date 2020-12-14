@@ -5,14 +5,17 @@ using System.Windows.Forms;
 
 namespace MIND.Library
 {
+    /// <summary>
+    /// Дело (из списка дел)
+    /// </summary>
     class ChekLine : LinesText
     {
-        public ChekLine(string s, int st) : base(st)
+        public ChekLine(string s, int st, Form1 f) : base(st)
         {
             bool tr = s[1] == 'X';
             s = s.Substring(4, s.Length - 4);
 
-            int x = 0, count_of_code = 0;
+            int x = 0, y = 5, maxx = 0, count_of_code = 0;
             List<InLineText> inLines = new List<InLineText>();
             List<Formated> formateds = new List<Formated>();
             List<List<Formated>> codes = new List<List<Formated>>();
@@ -35,7 +38,7 @@ namespace MIND.Library
                     }
                 }
             }
-            for (int i = 0; i < s.Length; i++) { formateds = InLineText.SearchFormat(s); }
+            formateds = InLineText.SearchFormat(s);
             if (formateds.Count > 1)
             {
                 int[] matrix = new int[formateds.Count];
@@ -102,39 +105,47 @@ namespace MIND.Library
                         case 1:
                             {
                                 inLines.Add(new Link(formateds.GetRange(j, k - j + 1), Form1.emSize, FontStyle.Regular));
-                                inLines[inLines.Count - 1].startString = 0;
+                                inLines[inLines.Count - 1].startString = y;
                                 inLines[inLines.Count - 1].startX = x;
                                 x += inLines[inLines.Count - 1].value.Width;
                                 if (inLines[inLines.Count - 1].value.Height > Form1.emSize * 2)
                                 {
                                     x = 0;
                                 }
+                                if (maxx < inLines[inLines.Count - 1].value.Width + x) maxx = inLines[inLines.Count - 1].value.Width + x;
                                 break;
                             }
                         case 2:
                             {
                                 inLines.Add(new ImageText(formateds.GetRange(j, k - j + 1), null, Form1.emSize, FontStyle.Regular));
+                                y += (int)(Form1.emSize * 2);
+                                inLines[inLines.Count - 1].startString = y;
+                                inLines[inLines.Count - 1].startX = 0;
+                                y += inLines[inLines.Count - 1].value.Height;
                                 x = 0;
-                                inLines[inLines.Count - 1].startString = 0;
-                                inLines[inLines.Count - 1].startX = x;
+                                if(maxx < inLines[inLines.Count - 1].value.Width) maxx = inLines[inLines.Count - 1].value.Width;
                                 break;
                             }
                         case 3:
                             {
-                                inLines.Add(new InLineCode(codes[count_of_code], Form1.emSize, FontStyle.Regular));
+                                inLines.Add(new InLineCode(codes[count_of_code], Form1.emSize));
                                 count_of_code++;
-                                inLines[inLines.Count - 1].startString = 0;
+                                x = 0;
+                                inLines[inLines.Count - 1].startString = y;
                                 inLines[inLines.Count - 1].startX = x;
                                 x += inLines[inLines.Count - 1].value.Width;
+                                y += inLines[inLines.Count - 1].value.Height;
+                                if (maxx < inLines[inLines.Count - 1].value.Width + x) maxx = inLines[inLines.Count - 1].value.Width + x;
                                 count_of_code++;
                                 break;
                             }
                         case 4:
                             {
                                 inLines.Add(new SimpleInLineText(formateds.GetRange(j, k - j + 1), Form1.emSize, FontStyle.Regular));
-                                inLines[inLines.Count - 1].startString = 0;
+                                inLines[inLines.Count - 1].startString = y;
                                 inLines[inLines.Count - 1].startX = x;
                                 x += inLines[inLines.Count - 1].value.Width;
+                                if (maxx < x) maxx = x;
                                 break;
                             }
                     }
@@ -145,33 +156,48 @@ namespace MIND.Library
             else
             {
                 inLines.Add(new SimpleInLineText(formateds, Form1.emSize, FontStyle.Regular));
-                inLines[inLines.Count - 1].startString = 0;
+                inLines[inLines.Count - 1].startString = y;
                 inLines[inLines.Count - 1].startX = x;
                 x += inLines[inLines.Count - 1].value.Width;
+                if (maxx < x) maxx = x;
             }
+            y += (int)(Form1.emSize * 2);
 
-
-            value = new ChekLineControl(inLines, tr, x);
+            value = new ChekLineControl(inLines, tr, maxx, y, f, startString);
         }
 
         public class ChekLineControl : UserControl
         {
-            public ChekLineControl(List<InLineText> value, bool tr, int x)
+            public int startstring;
+            public ChekLineControl(List<InLineText> value, bool tr, int x, int y, Form1 f, int start)
             {
-                CheckBox checkBox = new CheckBox();
+                startstring = start;
+                parrent = f;
+                checkBox = new CheckBox();
                 checkBox.Checked = tr;
-                checkBox.Enabled = false;
                 checkBox.Size = new Size(30, 30);
                 checkBox.CheckAlign = ContentAlignment.TopCenter;
+                checkBox.CheckedChanged += new EventHandler(CheckChange);
+                ChekboxChange += new EventHandler(f.ChengeCheckBox);
                 Controls.Add(checkBox);
                 Controls[Controls.Count - 1].Location = new Point(0, 0);
-                Size = new Size(x + 30, (int)Form1.emSize*2);
+                Size = new Size(x + 30, y);
+                checkBox.Location = new Point(0, y / 2 - checkBox.Height / 2+5);
                 for (int i = 0; i < value.Count; i++)
                 {
                     Controls.Add(value[i].value);
                     Controls[Controls.Count - 1].Location = new Point(value[i].startX+30, value[i].startString);
                 }
             }
+
+            private void CheckChange(object sender, EventArgs e)
+            {
+                ChekboxChange.Invoke(this, e);
+            }
+            public CheckBox checkBox;
+            Form1 parrent;
+            public event EventHandler ChekboxChange;
+
         }
     }
 }

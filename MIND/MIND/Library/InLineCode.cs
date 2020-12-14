@@ -10,7 +10,7 @@ namespace MIND.Library
 {
     class InLineCode:InLineText
     {
-        public InLineCode(List<Formated> s, float emSize, FontStyle style)
+        public InLineCode(List<Formated> s, float emSize)
         {
             Label v = new Label();
             string current = "";
@@ -22,8 +22,10 @@ namespace MIND.Library
             current = current.Replace((char)(65534), '*');
             current = current.Replace((char)(65535), '_');
             v.Text = current;
-            v.Font = new Font("Consolas", emSize, FontStyle.Regular|style, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            v.Size = new Size((int)(v.Text.Length * 10 + 10), 22);
+            v.Font = new Font("Consolas", emSize, FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            SizeF textSize = TextRenderer.MeasureText(v.Text, v.Font);
+            int w = v.Padding.Horizontal + (int)textSize.Width;
+            v.Size = new Size(w, (int)(emSize*2));
             v.BackColor = Color.Moccasin;
             v.ForeColor = Color.Black;
             value = v;

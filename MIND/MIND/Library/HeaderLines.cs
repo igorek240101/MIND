@@ -8,6 +8,9 @@ using System.Windows.Forms;
 
 namespace MIND.Library
 {
+    /// <summary>
+    /// Заголовки 
+    /// </summary>
     class HeaderLines: LinesText
     {
 
@@ -121,10 +124,10 @@ namespace MIND.Library
                                     inLines[inLines.Count - 1].startString = y;
                                     inLines[inLines.Count - 1].startX = x;
                                     x += inLines[inLines.Count - 1].value.Width;
-                                    if (inLines[inLines.Count - 1].value.Height > 22)
+                                    if (maxx < x) maxx = x;
+                                    if (inLines[inLines.Count - 1].value.Height > sized[count]*2)
                                     {
                                         y += inLines[inLines.Count - 1].value.Height + 22;
-                                        if (maxx < x) maxx = x;
                                         x = 0;
                                     }
                                     break;
@@ -141,12 +144,12 @@ namespace MIND.Library
                                 }
                             case 3:
                                 {
-                                    inLines.Add(new InLineCode(codes[count_of_code], sized[count], FontStyle.Regular));
+                                    inLines.Add(new InLineCode(codes[count_of_code], sized[count]));
                                     count_of_code++;
                                     inLines[inLines.Count - 1].startString = y;
                                     inLines[inLines.Count - 1].startX = x;
                                     x += inLines[inLines.Count - 1].value.Width;
-                                    count_of_code++;
+                                    if (maxx < x) maxx = x;
                                     break;
                                 }
                             case 4:
@@ -155,6 +158,7 @@ namespace MIND.Library
                                     inLines[inLines.Count - 1].startString = y;
                                     inLines[inLines.Count - 1].startX = x;
                                     x += inLines[inLines.Count - 1].value.Width;
+                                    if (maxx < x) maxx = x;
                                     break;
                                 }
                         }

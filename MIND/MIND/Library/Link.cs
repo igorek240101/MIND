@@ -140,8 +140,8 @@ namespace MIND.Library
                     if (v[i].GetType() == typeof(LinkLabel))
                     {
                         Graphics g = Graphics.FromHwnd(v[i].Handle);
-                        SizeF s = g.MeasureString(v[i].Text, Font);
-                        w += v[i].Padding.Horizontal + (int)(s.Width * 2);
+                        SizeF s = g.MeasureString(v[i].Text, v[i].Font);
+                        w += v[i].Padding.Horizontal + (int)(s.Width);
                         Controls.Add(v[i]);
                         Controls[Controls.Count - 1].Location = new Point(sized + loc, y);
                         loc = loc + sized;

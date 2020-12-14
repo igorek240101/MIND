@@ -241,6 +241,7 @@ namespace MIND.Library
                 if (formateds[i].s == 65533) formateds[i].s = '~';
                 if (formateds[i].s == 65534) formateds[i].s = '*';
                 if (formateds[i].s == 65535) formateds[i].s = '_';
+                if (formateds[i].s == 65526) { formateds.RemoveAt(i);i--;}
             }
             return formateds;
 

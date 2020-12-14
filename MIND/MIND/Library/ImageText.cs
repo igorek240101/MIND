@@ -31,7 +31,7 @@ namespace MIND.Library
 
             List<Link> links = new List<Link>();
             List<int> q = new List<int>();
-            for(int i = 2; i < s.Count; i++)
+            for(int i = 2; i < count; i++)
             {
                 int end;
                 if(s[i].s == '[')

@@ -8,13 +8,17 @@ namespace MIND.Library
 {
     class TableLines : LinesText
     {
+        public int xc, yc;
+        public bool?[] loc;
+        public SimpleLines[,] cell;
+
         public TableLines(string s, int st) : base(st)
         {
             string[] array = s.Split(new string[] { "\r\n" }, System.StringSplitOptions.RemoveEmptyEntries);
             array[1] = array[1].Replace(" ","");
             string[] a = array[1].Split('|');
             int y = array.Length, x = a.Length - 2;
-            bool?[] loc = new bool?[a.Length - 2];
+            loc = new bool?[a.Length - 2];
             for(int i = 1; i < a.Length-1; i++)
             {
                 if(a[i][0] == ':' && a[i][a[i].Length-1] == ':')
@@ -51,8 +55,10 @@ namespace MIND.Library
                 }
             }
             y--;
-
+            cell = inLine;
             value = new TableLinesControl(inLine, loc, x, y);
+            xc = x;
+            yc = y;
         }
 
         public class TableLinesControl : UserControl

@@ -45,3 +45,7 @@ D:\GitHub\MIND\MIND\MIND\bin\Debug\itext.pdfa.xml
 D:\GitHub\MIND\MIND\MIND\bin\Debug\itext.sign.xml
 D:\GitHub\MIND\MIND\MIND\bin\Debug\itext.styledxmlparser.xml
 D:\GitHub\MIND\MIND\MIND\bin\Debug\itext.svg.xml
+D:\GitHub\MIND\MIND\MIND\bin\Debug\CommonMark.dll
+D:\GitHub\MIND\MIND\MIND\bin\Debug\CommonMark.pdb
+D:\GitHub\MIND\MIND\MIND\bin\Debug\CommonMark.xml
+D:\GitHub\MIND\MIND\MIND\obj\Debug\MIND.HTML_visor.resources

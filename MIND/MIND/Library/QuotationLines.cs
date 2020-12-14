@@ -15,6 +15,7 @@ namespace MIND.Library
         {
             s = s.Substring(1, s.Length - 1);
             s = s.Replace("\r\n>", "\r\n");
+            s = ToFormatLine(s);
             int x = 20, y = 5, maxx = 0, count_of_code = 0;
             List<InLineText> inLines = new List<InLineText>();
             string[] array = s.Split(new string[] { "\r\n" }, StringSplitOptions.None);
@@ -134,7 +135,7 @@ namespace MIND.Library
                                 }
                             case 3:
                                 {
-                                    inLines.Add(new InLineCode(codes[count_of_code], Form1.emSize, FontStyle.Italic));
+                                    inLines.Add(new InLineCode(codes[count_of_code], Form1.emSize));
                                     count_of_code++;
                                     inLines[inLines.Count - 1].startString = y;
                                     inLines[inLines.Count - 1].startX = x;
