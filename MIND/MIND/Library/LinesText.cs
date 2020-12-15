@@ -4,7 +4,7 @@ using System;
 
 namespace MIND.Library
 {
-    class LinesText
+    abstract class LinesText
     {
         public int startString;
 

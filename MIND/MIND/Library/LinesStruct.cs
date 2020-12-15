@@ -97,7 +97,7 @@ namespace MIND.Library
                     {
                         if (str[i][j] != '-')
                         {
-                            if (j == 0 || j == str.Length - 1)
+                            if (j == 0 || j == str[i].Length - 1)
                             {
                                 if (str[i][j] != ':') return false;
                             }

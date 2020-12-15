@@ -8,7 +8,7 @@ using System.Windows.Forms;
 
 namespace MIND.Library
 {
-    public class InLineText
+    public abstract class InLineText
     {
         public int startString;
         public int startX;
